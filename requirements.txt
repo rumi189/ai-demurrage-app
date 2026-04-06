@@ -1,8 +1,5 @@
 streamlit
+pymupdf
 pandas
-numpy
-pdfplumber
-pytesseract
-Pillow
-openai
+python-dateutil
 reportlab
