@@ -1,53 +1,23 @@
-def ai_parse(text):
+import json
 
-    prompt = f"""
-You are a senior maritime laytime expert.
+def run_ai_pipeline(raw_text):
+    """
+    Simple AI pipeline placeholder
+    Returns structured events + detected NOR
+    """
 
-Carefully analyze the Statement of Facts.
+    events = []
 
-CRITICAL RULES:
+    lines = raw_text.split("\n")
 
-1. Cargo Start:
-   - First actual loading/discharging activity
-   - NOT shifting, waiting, or idle time
+    for line in lines:
+        if ":" in line:
+            events.append({
+                "event": line.strip(),
+                "type": "unknown"
+            })
 
-2. Cargo Complete:
-   - Final completion of cargo operations
+    # Dummy NOR detection (upgrade later)
+    nor_time = None
 
-3. IGNORE:
-   - Pre-arrival delays
-   - Waiting before cargo starts
-   - Events outside cargo window
-
-4. Delays:
-   - Only include delays DURING cargo operations
-   - Must have valid start AND end
-
-5. Ensure:
-   - Cargo start < cargo complete
-   - Timeline is logical
-
-Return STRICT JSON ONLY:
-
-{{
-"cargo_start":"YYYY-MM-DD HH:MM",
-"cargo_complete":"YYYY-MM-DD HH:MM",
-"delays":[
-    {{
-    "type":"weather/port/charterer",
-    "start":"YYYY-MM-DD HH:MM",
-    "end":"YYYY-MM-DD HH:MM"
-    }}
-]
-}}
-
-TEXT:
-{text[:4000]}
-"""
-
-    response = client.chat.completions.create(
-        model="gpt-5",
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    return safe_json(response.choices[0].message.content)
+    return events, nor_time
